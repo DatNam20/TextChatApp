@@ -65,9 +65,6 @@ public class ChatsFragment extends Fragment {
                     Chat chat = snapshot.getValue(Chat.class);
 
                     assert chat != null;
-/*      deepali_nullPointerException:
-                same error as UserFragment
-*/
                     if ( chat.getSenderID().equals(firebaseUser.getUid()) )
                         usersList.add(chat.getReceiverID());
                     if ( chat.getReceiverID().equals(firebaseUser.getUid()) )
@@ -90,7 +87,9 @@ public class ChatsFragment extends Fragment {
 
         mUsers = new ArrayList<>();
 
-        dbReference = FirebaseDatabase.getInstance().getReference().child("Users");
+//        dbReference = FirebaseDatabase.getInstance().getReference().child("Users");
+
+        dbReference = FirebaseDatabase.getInstance().getReference("Users");
         dbReference.addValueEventListener(new ValueEventListener() {
 
             @Override
@@ -106,10 +105,17 @@ public class ChatsFragment extends Fragment {
                     {
                         if (user.getId().equals(id))
                         {
-                            if (mUsers.size() != 0) {
-                                for(User user_m: mUsers)
+/*      deepali_ConcurrentModificationException:
+                mUsers was getting iterated and modified concurrently
+
+            solution -  separated the arraylist which is being iterated(temp)
+                        and the arraylist being modified (mUsers)
+*/
+                            ArrayList<User> temp = new ArrayList<>(mUsers);
+                            if (temp.size() != 0) {
+                                for(User user_m: temp)
                                 {
-                                    if (user.getId().equals(user_m.getId()))
+                                    if (!user.getId().equals(user_m.getId()))
                                         mUsers.add(user);
                                 }
                             }
