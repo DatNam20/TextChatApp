@@ -1,0 +1,33 @@
+<resources>
+
+    <string name="app_name">TextChatApp</string>
+
+
+    <string name="title_Start">TextChatApp</string>
+    <string name="loginButtonText_Start">Login</string>
+    <string name="registerButtonText_Start">Register</string>
+
+
+    <string name="messageHint_message">Type your message</string>
+
+
+    <string name="usernameHint_Register">Username</string>
+    <string name="emailHint_Register">E-mail</string>
+    <string name="passwordHint_Register">Password</string>
+    <string name="createAccount_Register">Create a New Account</string>
+    <string name="buttonText_Register">Register</string>
+
+
+    <string name="emailHint_Login">E-mail</string>
+    <string name="passwordHint_Login">Password</string>
+    <string name="account_Login">Login to Your Account</string>
+    <string name="buttonText_Login">Login</string>
+
+
+    <string name="logoutItemText_MainMenu">Logout</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+</resources>
