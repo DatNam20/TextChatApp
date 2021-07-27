@@ -6,37 +6,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Fragments.UsersProfileFragment">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:id="@+id/myProfile_bar" >
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar_message"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorBrightTaint"
-            android:elevation="10dp"
-            android:theme="@style/Base.ThemeOverlay.AppCompat.Dark.ActionBar" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:textSize="20sp"
-                android:textColor="#ffffff"
-                android:text="myProfile"/>
-
-        </androidx.appcompat.widget.Toolbar>
-
-    </com.google.android.material.appbar.AppBarLayout>
-
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardElevation="0dp"
-        android:layout_below="@id/myProfile_bar"
-        android:layout_marginTop="10dp">
+        app:cardElevation="0dp" >
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -44,23 +17,23 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profileImage_userProfile"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="75dp"
                 android:src="@drawable/default_profile_image"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/userName_text"
+                android:id="@+id/userNameText_profile"
                 android:layout_below="@id/profileImage_userProfile"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="30dp"
                 android:layout_marginBottom="30dp"
                 android:text="userName"
                 android:textColor="@color/colorBrightTaint"
-                android:textSize="20dp"/>
+                android:textSize="18dp"/>
 
         </RelativeLayout>
 
