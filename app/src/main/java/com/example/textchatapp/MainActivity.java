@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.textchatapp.Fragments.ChatsFragment;
 import com.example.textchatapp.Fragments.UsersFragment;
+import com.example.textchatapp.Fragments.UsersProfileFragment;
 import com.example.textchatapp.Model.User;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -108,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
 
         viewPagerAdapter.addToList(new ChatsFragment(), "CHATS");
         viewPagerAdapter.addToList(new UsersFragment(), "USERS");
+        viewPagerAdapter.addToList(new UsersProfileFragment(), "ME");
 
         viewPager_main.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager_main);
