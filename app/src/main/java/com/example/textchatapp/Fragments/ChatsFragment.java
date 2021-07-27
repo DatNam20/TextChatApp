@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,16 +25,23 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 
 public class ChatsFragment extends Fragment {
+
+    private static final String TAG = "logTAG";
 
 
     private RecyclerView recyclerView;
     private UserAdapter userAdapter;
     private List<User> mUsers;
     private List<String> usersList;
+// using HashSet to prevent Duplicate Data
+    private HashSet<User> mUsersSet;
+    private HashSet<String> usersSet;
+
 
     FirebaseUser firebaseUser;
     DatabaseReference dbReference;
@@ -70,7 +78,10 @@ public class ChatsFragment extends Fragment {
                     if ( chat.getReceiverID().equals(firebaseUser.getUid()) )
                         usersList.add(chat.getSenderID());
                 }
-
+// using HashSet to prevent Duplicate Data
+                usersSet = new HashSet<>(usersList);
+                usersList.removeAll(usersList);
+                usersList.addAll(usersSet);
                 readChat();
             }
 
@@ -108,8 +119,8 @@ public class ChatsFragment extends Fragment {
 /*      deepali_ConcurrentModificationException:
                 mUsers was getting iterated and modified concurrently
 
-            solution -  separated the arraylist which is being iterated(temp)
-                        and the arraylist being modified (mUsers)
+            solution -  separated the arraylist into one being iterated(temp)
+                        and the other being modified (mUsers)
 */
                             ArrayList<User> temp = new ArrayList<>(mUsers);
                             if (temp.size() != 0) {
@@ -124,6 +135,10 @@ public class ChatsFragment extends Fragment {
                         }
                     }
                 }
+// using HashSet to prevent Duplicate Data
+                mUsersSet = new HashSet<>(mUsers);
+                mUsers.removeAll(mUsers);
+                mUsers.addAll(mUsersSet);
 
                 userAdapter = new UserAdapter(getContext(), mUsers);
                 recyclerView.setAdapter(userAdapter);
