@@ -140,7 +140,7 @@ public class ChatsFragment extends Fragment {
                 mUsers.removeAll(mUsers);
                 mUsers.addAll(mUsersSet);
 
-                userAdapter = new UserAdapter(getContext(), mUsers);
+                userAdapter = new UserAdapter(getContext(), mUsers, true);
                 recyclerView.setAdapter(userAdapter);
 
             }

@@ -24,14 +24,16 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
     private static final String TAG = "logTAG";
 
-//      mContext, mUsers
+
     private Context mContext;
     private List<User> mUsers;
+    private boolean isChat;
 
 
-    public UserAdapter(Context mContext, List<User> mUsers) {
+    public UserAdapter(Context mContext, List<User> mUsers, boolean isChat) {
         this.mContext = mContext;
         this.mUsers = mUsers;
+        this.isChat = isChat;
     }
 
 
@@ -39,12 +41,15 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
         private TextView username;
         private ImageView profile_image;
+        private ImageView activityStatus;
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             username = itemView.findViewById(R.id.usernameText_eachUser);
             profile_image = itemView.findViewById(R.id.profileImage_eachUser);
+            activityStatus = itemView.findViewById(R.id.activityStatus_online);
         }
     }
 
@@ -66,6 +71,12 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             holder.profile_image.setImageResource(R.drawable.default_profile_image);
         else
             Glide.with(mContext).load(user.getImageURL()).into(holder.profile_image);
+
+
+        if (isChat == true && user.getActivityStatus() == "online")
+            holder.activityStatus.setVisibility(View.VISIBLE);
+        else
+            holder.activityStatus.setVisibility(View.GONE);
 
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {

@@ -32,6 +32,7 @@ import com.google.firebase.database.ValueEventListener;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         profileImageView = findViewById(R.id.profileImage_main);
         usernameText = findViewById(R.id.usernameText_main);
 
-//      DOes not Work --> usernameText.setTypeface(null, Typeface.ITALIC);
+//  Does not Work --> usernameText.setTypeface(null, Typeface.ITALIC);
 
 
         toolbar_main = findViewById(R.id.toolbar_main);
@@ -67,11 +68,10 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar_main.inflateMenu(R.menu.menu);
 
-        /*      deepali_StringError: Empty String Error in
-                        toolbar_main.setTitle(" ");
-                correction: getSupportActionBar().setDisplayShowTitleEnabled(false);
-        */
-
+/*      deepali_StringError: Empty String Error in
+                toolbar_main.setTitle(" ");
+        correction: getSupportActionBar().setDisplayShowTitleEnabled(false);
+*/
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         dbReference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
@@ -82,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 User user = snapshot.getValue(User.class);
-
 /*    Log.i(TAG, "user_id  -->  "+user.getId());      */
 
                 assert user != null;
@@ -114,9 +113,7 @@ public class MainActivity extends AppCompatActivity {
         viewPager_main.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager_main);
 
-
     }
-
 
 
     @Override
@@ -133,20 +130,18 @@ public class MainActivity extends AppCompatActivity {
         {
             case R.id.logout_item_menu:
                 FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(MainActivity.this, StartActivity.class));
-                finish();
+                startActivity(new Intent(MainActivity.this, StartActivity.class)
+                        .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                 return true;
         }
         return false;
     }
 
 
-
-        /*    deepali_deprecatedClass:
-                    ViewPager and FragmentPagerAdapter are deprecated
-                    ViewPager2 and FragmentStateAdapter are respective alternative
-        */
-
+/*    deepali_deprecatedClass:
+            ViewPager and FragmentPagerAdapter are deprecated
+            ViewPager2 and FragmentStateAdapter are respective alternative
+*/
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
 
@@ -167,26 +162,44 @@ public class MainActivity extends AppCompatActivity {
             return fragmentsList.get(position);
         }
 
-
         @Override
         public int getCount() {
             return fragmentsList.size();
         }
 
-
-        public void addToList(Fragment eachFragment, String eachFragmentTitle)
-        {
+        public void addToList(Fragment eachFragment, String eachFragmentTitle) {
             fragmentsList.add(eachFragment);
             fragmentsTitleList.add(eachFragmentTitle);
         }
-
 
         @Nullable
         @Override
         public CharSequence getPageTitle(int position) {
             return fragmentsTitleList.get(position);
         }
+    }
 
+
+    public void switchActivityStatus (String activityStatus) {
+
+        dbReference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
+
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("activityStatus", activityStatus);
+
+        dbReference.updateChildren(map);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        switchActivityStatus("online");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        switchActivityStatus("offline");
     }
 
 

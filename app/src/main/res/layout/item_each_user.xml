@@ -2,14 +2,26 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp" >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="10dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profileImage_eachUser"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginLeft="10dp"
-        android:src="@drawable/default_profile_image"/>
+        android:src="@drawable/default_profile_image" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/activityStatus_online"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginLeft="57dp"
+        android:visibility="gone"
+        android:src="@drawable/default_profile_image"
+        app:civ_border_color="@color/online"
+        app:civ_border_width="8dp" />
 
     <TextView
         android:id="@+id/usernameText_eachUser"
@@ -17,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/profileImage_eachUser"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="15dp"
         android:textColor="@color/colorBrightTaint"
         android:textSize="20sp"
         android:textStyle="bold"/>
