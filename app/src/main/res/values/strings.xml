@@ -22,12 +22,16 @@
     <string name="passwordHint_Login">Password</string>
     <string name="account_Login">Login to Your Account</string>
     <string name="buttonText_Login">Login</string>
+    <string name="forgotPasswordText_Login">Forgot Password?</string>
+
+
+    <string name="titleText_ResetPassword">Please enter your registered e-mail id and click RESET.
+                                            You will receive a mail on the provided e-mail id </string>
+    <string name="emailHint_ResetPassword">E-mail</string>
+    <string name="buttonText_ResetPassword">Reset</string>
 
 
     <string name="logoutItemText_MainMenu">Logout</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>
