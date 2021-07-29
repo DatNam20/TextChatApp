@@ -42,14 +42,16 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView messageText;
-        private ImageView profile_image;
+        public TextView messageText;
+        public ImageView profile_image;
+        public TextView seenIndicatorText;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             messageText = itemView.findViewById(R.id.message_text);
             profile_image = itemView.findViewById(R.id.profile_image);
+            seenIndicatorText = itemView.findViewById(R.id.delivered_seen_text);
         }
     }
 
@@ -79,6 +81,16 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         else
             Glide.with(mContext).load(imageURL).into(holder.profile_image);
 
+        if(position == (mChats.size()-1) )
+        {
+            if(chat.isSeen())
+                holder.seenIndicatorText.setText("Seen");
+            else
+                holder.seenIndicatorText.setText("Delivered");
+        }
+        else
+            holder.seenIndicatorText.setVisibility(View.GONE);
+        
     }
 
     @Override

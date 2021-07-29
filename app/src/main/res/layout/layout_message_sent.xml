@@ -35,6 +35,17 @@
             android:textSize="15dp"
             android:background="@drawable/design_message_sent"/>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/delivered_seen_text"
+            android:text="delivered"
+            android:layout_below="@id/message_text"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="18dp"
+            android:layout_marginRight="18dp"/>
+
 </RelativeLayout>
 
 </RelativeLayout>

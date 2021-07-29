@@ -4,16 +4,26 @@ public class Chat {
 
 
     private String senderID, receiverID, message;
+    private boolean isSeen;
 
 
     public Chat() { }
 
-    public Chat(String senderID, String receiverID, String message) {
+    public Chat(String senderID, String receiverID, String message, boolean isSeen) {
         this.senderID = senderID;
         this.receiverID = receiverID;
         this.message = message;
+        this.isSeen = isSeen;
     }
 
+
+    public boolean isSeen() {
+        return isSeen;
+    }
+
+    public void setSeen(boolean seen) {
+        isSeen = seen;
+    }
 
     public String getSenderID() {
         return senderID;

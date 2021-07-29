@@ -41,7 +41,6 @@ public class MessageActivity extends AppCompatActivity {
     TextView usernameText;
     EditText inputText;
     Intent intent;
-    String userID;
     Toolbar toolbar_message;
 
     MessageAdapter messageAdapter;
@@ -51,6 +50,7 @@ public class MessageActivity extends AppCompatActivity {
     FirebaseUser firebaseUser;
     DatabaseReference dbReference;
 
+    ValueEventListener messageSeenListener;
 
 
     @Override
@@ -64,7 +64,7 @@ public class MessageActivity extends AppCompatActivity {
         usernameText = findViewById(R.id.usernameText_message);
         inputText = findViewById(R.id.inputText_message);
         intent = getIntent();
-        userID = intent.getStringExtra("userID");
+        final String userID = intent.getStringExtra("userID");
 
 
         recyclerView = findViewById(R.id.recyclerView_message);
@@ -117,7 +117,7 @@ public class MessageActivity extends AppCompatActivity {
                 if (user.getImageURL().equals("default"))
                     profileImageView.setImageResource(R.drawable.default_profile_image);
                 else
-                    Glide.with(MessageActivity.this).load(user.getImageURL()).into(profileImageView);
+                    Glide.with(getApplicationContext()).load(user.getImageURL()).into(profileImageView);
 
                 readMessage(firebaseUser.getUid(), userID, user.getImageURL());
             }
@@ -128,7 +128,36 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
 
+        checkMessageSeen(userID);
     }
+
+
+    private void checkMessageSeen(String userID) {
+        dbReference = FirebaseDatabase.getInstance().getReference("Chats");
+
+        messageSeenListener = dbReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
+
+                    Chat chat = dataSnapshot.getValue(Chat.class);
+
+                    if (chat.getReceiverID().equals(firebaseUser.getUid()) && chat.getSenderID().equals(userID))
+                    {
+                        HashMap<String, Object> hashMap = new HashMap<>();
+                        hashMap.put("isSeen", true);
+                        dataSnapshot.getRef().updateChildren(hashMap);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
 
     private void sendMessage(String senderID, String receiverID, String message) {
 
@@ -139,6 +168,7 @@ public class MessageActivity extends AppCompatActivity {
         hashMap.put("senderID", senderID);
         hashMap.put("receiverID", receiverID);
         hashMap.put("message", message);
+        hashMap.put("isSeen", false);
 
         reference.child("Chats").push().setValue(hashMap);
     }
@@ -195,8 +225,8 @@ public class MessageActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        dbReference.removeEventListener(messageSeenListener);
         switchActivityStatus("offline");
     }
-
 
 }
