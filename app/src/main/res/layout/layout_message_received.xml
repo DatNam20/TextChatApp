@@ -31,7 +31,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/delivered_seen_text"
-        android:text="delivered"
         android:visibility="gone"
         android:layout_below="@id/message_text"
         android:layout_marginTop="18dp"/>

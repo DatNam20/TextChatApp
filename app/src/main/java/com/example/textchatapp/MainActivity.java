@@ -197,10 +197,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onPause() {
+        super.onPause();
         switchActivityStatus("offline");
     }
-
-
 }

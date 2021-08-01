@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -34,6 +35,8 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MessageActivity extends AppCompatActivity {
+
+    private static final String TAG = "logTAG";
 
 
     CircleImageView profileImageView;
@@ -64,7 +67,7 @@ public class MessageActivity extends AppCompatActivity {
         usernameText = findViewById(R.id.usernameText_message);
         inputText = findViewById(R.id.inputText_message);
         intent = getIntent();
-        final String userID = intent.getStringExtra("userID");
+        final String  userID = intent.getStringExtra("userID");
 
 
         recyclerView = findViewById(R.id.recyclerView_message);
@@ -148,6 +151,9 @@ public class MessageActivity extends AppCompatActivity {
                         hashMap.put("isSeen", true);
                         dataSnapshot.getRef().updateChildren(hashMap);
                     }
+
+                    Log.i(TAG, "\n"+"\n"+chat.getMessage()+" isSeen _ "+chat.isSeen());
+
                 }
             }
 
@@ -169,6 +175,11 @@ public class MessageActivity extends AppCompatActivity {
         hashMap.put("receiverID", receiverID);
         hashMap.put("message", message);
         hashMap.put("isSeen", false);
+
+        Log.i(TAG, "\n uploading Data - ");
+        Log.i(TAG, "\n senderID - "+senderID);
+        Log.i(TAG, "\n receiverID - "+receiverID);
+        Log.i(TAG, "\n message - "+message);
 
         reference.child("Chats").push().setValue(hashMap);
     }
@@ -223,10 +234,11 @@ public class MessageActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onPause() {
+        super.onPause();
         dbReference.removeEventListener(messageSeenListener);
         switchActivityStatus("offline");
     }
+
 
 }
