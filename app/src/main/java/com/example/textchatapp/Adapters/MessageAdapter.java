@@ -1,7 +1,6 @@
 package com.example.textchatapp.Adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.textchatapp.MessageActivity;
 import com.example.textchatapp.Model.Chat;
 import com.example.textchatapp.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -83,7 +81,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
         if(position == (mChats.size()-1) )
         {
-            if(chat.isSeen())
+            if(chat.isIsseen())
                 holder.seenIndicatorText.setText("Seen");
             else
                 holder.seenIndicatorText.setText("Delivered");

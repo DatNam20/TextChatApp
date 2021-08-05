@@ -13,6 +13,7 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -57,6 +58,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:20.0.0'
     implementation 'com.google.firebase:firebase-core:19.0.0'
 
+    // to store profile_images
     implementation 'com.google.firebase:firebase-storage:20.0.0'
 
     // for circular imageview
@@ -64,6 +66,18 @@ dependencies {
 
     // for profileImage
     implementation 'com.github.bumptech.glide:glide:4.12.0'
+
+    // A type-safe HTTP client for Android and the JVM
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+
+    // A Converter which uses Gson for serialization to and from JSON
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
+    // Send notifications with Cloud Messaging
+    implementation 'com.google.firebase:firebase-messaging:22.0.0'
+
+    // To resolve Error - "The number of method references in a .dex file cannot exceed 64K."
+    implementation "androidx.multidex:multidex:2.0.1"
 
 
 }

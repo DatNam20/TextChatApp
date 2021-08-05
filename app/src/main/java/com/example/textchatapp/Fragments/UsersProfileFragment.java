@@ -41,6 +41,7 @@ import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -59,7 +60,7 @@ public class UsersProfileFragment extends Fragment {
 
     private Uri imageUri;
     StorageReference storageReference;
-    private StorageTask uploadImageTask;
+    private StorageTask<UploadTask.TaskSnapshot> uploadImageTask;
 
     ActivityResultLauncher<Intent> resultLauncher;
 
@@ -164,8 +165,10 @@ public class UsersProfileFragment extends Fragment {
             uploadImageTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>> () {
                 @Override
                 public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+//  unchecked or unsafe operation Error:
+//      Caused by - throw task.getException();
                     if (!task.isSuccessful())
-                        throw task.getException();
+                        throw Objects.requireNonNull(task.getException());
 
                     return fileReference.getDownloadUrl();
                 }

@@ -16,12 +16,11 @@ public class Chat {
         this.isSeen = isSeen;
     }
 
-
-    public boolean isSeen() {
+    public boolean isIsseen() {
         return isSeen;
     }
 
-    public void setSeen(boolean seen) {
+    public void setIsseen(boolean seen) {
         isSeen = seen;
     }
 

@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import com.example.textchatapp.Adapters.UserAdapter;
 import com.example.textchatapp.Model.Chat;
 import com.example.textchatapp.Model.User;
+import com.example.textchatapp.Notifications.Token;
 import com.example.textchatapp.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -23,6 +24,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -100,8 +102,18 @@ public class ChatsFragment extends Fragment {
             }
         });
 
+        updateToken(FirebaseMessaging.getInstance().getToken().toString());
+
         return view;
     }
+
+
+    private void updateToken(String newToken){
+        dbReference = FirebaseDatabase.getInstance().getReference("Token");
+        Token updatedToken = new Token(newToken);
+        dbReference.child(firebaseUser.getUid()).setValue(updatedToken);
+    }
+
 
     private void readChat() {
 
