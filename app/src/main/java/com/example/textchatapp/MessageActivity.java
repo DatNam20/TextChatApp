@@ -169,8 +169,6 @@ public class MessageActivity extends AppCompatActivity {
                         dataSnapshot.getRef().updateChildren(hashMap);
                     }
 
-                    Log.i(TAG, "\n"+chat.getMessage()+" isseen _ "+chat.isIsseen());
-
                 }
             }
 
@@ -192,11 +190,6 @@ public class MessageActivity extends AppCompatActivity {
         hashMap.put("receiverID", receiverID);
         hashMap.put("message", message);
         hashMap.put("isseen", false);
-
-        Log.i(TAG, "\n uploading Data - ");
-        Log.i(TAG, "\n senderID - "+senderID);
-        Log.i(TAG, "\n receiverID - "+receiverID);
-        Log.i(TAG, "\n message - "+message);
 
         reference.child("Chats").push().setValue(hashMap);
 
@@ -303,12 +296,12 @@ public class MessageActivity extends AppCompatActivity {
     }
 
 
-    public void switchActivityStatus (String activityStatus) {
+    public void switchActivityStatus (String activity) {
 
         dbReference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
 
         HashMap<String, Object> map = new HashMap<>();
-        map.put("activityStatus", activityStatus);
+        map.put("activity", activity);
 
         dbReference.updateChildren(map);
     }

@@ -82,8 +82,6 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 User user = snapshot.getValue(User.class);
-/*    Log.i(TAG, "user_id  -->  "+user.getId());      */
-
                 assert user != null;
                 usernameText.setText(user.getUsername());
 
@@ -180,12 +178,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void switchActivityStatus (String activityStatus) {
+    public void switchActivityStatus (String activity) {
 
         dbReference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
 
         HashMap<String, Object> map = new HashMap<>();
-        map.put("activityStatus", activityStatus);
+        map.put("activity", activity);
 
         dbReference.updateChildren(map);
     }

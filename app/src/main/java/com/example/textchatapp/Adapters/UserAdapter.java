@@ -53,7 +53,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
         private TextView username;
         private ImageView profile_image;
-        private ImageView activityStatus;
+        private ImageView activity;
         private TextView lastMessageText;
 
 
@@ -62,7 +62,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
             username = itemView.findViewById(R.id.usernameText_eachUser);
             profile_image = itemView.findViewById(R.id.profileImage_eachUser);
-            activityStatus = itemView.findViewById(R.id.activityStatus_online);
+            activity = itemView.findViewById(R.id.activityStatus_online);
             lastMessageText = itemView.findViewById(R.id.lastMessageText_eachUser);
         }
     }
@@ -88,14 +88,13 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             Glide.with(mContext).load(user.getImageURL()).into(holder.profile_image);
 
 
-        if (isChat == true && user.getActivityStatus() == "online") {
-            holder.activityStatus.setVisibility(View.VISIBLE);
-//            Log.i(TAG, "\t user "+user.getUsername()+" online ");
-        }
-        else {
-            holder.activityStatus.setVisibility(View.GONE);
-//            Log.i(TAG, "\t holder _ "+holder.username.getText()+" "+user.getActivityStatus());
-        }
+
+        if (isChat == true && user.getActivity().equals("online"))
+            holder.activity.setVisibility(View.VISIBLE);
+        
+        else
+            holder.activity.setVisibility(View.GONE);
+
 
 
         if (isChat == true)

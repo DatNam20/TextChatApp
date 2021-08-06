@@ -3,24 +3,24 @@ package com.example.textchatapp.Model;
 public class User {
 
 
-    private String id, username, imageURL, activityStatus;
+    private String id, username, imageURL, activity;
 
 
     public User() { }
 
-    public User(String id, String username, String imageURL, String activityStatus) {
+    public User(String id, String username, String imageURL, String activity) {
         this.id = id;
         this.username = username;
         this.imageURL = imageURL;
-        this.activityStatus = activityStatus;
+        this.activity = activity;
     }
 
-    public String getActivityStatus() {
-        return activityStatus;
+    public String getActivity() {
+        return activity;
     }
 
-    public void setActivityStatus(String activityStatus) {
-        this.activityStatus = activityStatus;
+    public void setActivity(String activity) {
+        this.activity = activity;
     }
 
     public String getId() {
