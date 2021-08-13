@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import com.example.textchatapp.Adapters.UserAdapter;
 import com.example.textchatapp.Model.Chat;
 import com.example.textchatapp.Model.User;
+import com.example.textchatapp.Notifications.MessagingService;
 import com.example.textchatapp.Notifications.Token;
 import com.example.textchatapp.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -64,6 +65,8 @@ public class ChatsFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_chats, container, false);
 
+        FirebaseMessaging.getInstance().setAutoInitEnabled(true);
+
         recyclerView = view.findViewById(R.id.recyclerView_chatsFragment);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -110,7 +113,11 @@ public class ChatsFragment extends Fragment {
 
     private void updateToken(String newToken){
         dbReference = FirebaseDatabase.getInstance().getReference("Token");
+
         Token updatedToken = new Token(newToken);
+
+        Log.i(TAG, "    chatsFragment  -->  TOKEN : " + updatedToken.toString());
+
         dbReference.child(firebaseUser.getUid()).setValue(updatedToken);
     }
 

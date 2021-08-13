@@ -34,4 +34,8 @@
     <string name="logoutItemText_MainMenu">Logout</string>
 
 
+    <string name="default_notification_channel_id">Notification Channel</string>
+    <string name="default_notification_channel_name">Chatter</string>
+
+
 </resources>

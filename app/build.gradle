@@ -75,6 +75,7 @@ dependencies {
 
     // Send notifications with Cloud Messaging
     implementation 'com.google.firebase:firebase-messaging:22.0.0'
+    implementation 'com.google.firebase:firebase-analytics'
 
     // To resolve Error - "The number of method references in a .dex file cannot exceed 64K."
     implementation "androidx.multidex:multidex:2.0.1"

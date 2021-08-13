@@ -22,7 +22,8 @@ import com.example.textchatapp.Model.Chat;
 import com.example.textchatapp.Model.User;
 import com.example.textchatapp.Notifications.Client;
 import com.example.textchatapp.Notifications.Data;
-import com.example.textchatapp.Notifications.Response;
+import com.example.textchatapp.Notifications.MessagingService;
+import com.example.textchatapp.Notifications.RetrofitResponse;
 import com.example.textchatapp.Notifications.Sender;
 import com.example.textchatapp.Notifications.Token;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,6 +34,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,6 +43,8 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
+
 
 public class MessageActivity extends AppCompatActivity {
 
@@ -73,6 +77,9 @@ public class MessageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
 
+        FirebaseMessaging.getInstance().setAutoInitEnabled(true);
+
+//        startService(new Intent(this, MessagingService.class));
 
         profileImageView = findViewById(R.id.profileImage_message);
         sendMessageButton = findViewById(R.id.sendMessage_imageButton);
@@ -102,7 +109,7 @@ public class MessageActivity extends AppCompatActivity {
         });
 
 
-        apiService = Client.getClient("https://fcm.googleapis.com/").create(APIService.class);
+        apiService = Client.getClient().create(APIService.class);
 
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -113,13 +120,14 @@ public class MessageActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                toNotify = true;
                 String inputMessage = inputText.getText().toString();
 
                 if ("".equals(inputMessage))
                     Toast.makeText(MessageActivity.this, "Empty Message", Toast.LENGTH_SHORT).show();
-                else
+                else {
+                    toNotify = true;
                     sendMessage(firebaseUser.getUid(), userID, inputMessage);
+                }
 
                 inputText.setText("");
             }
@@ -195,14 +203,19 @@ public class MessageActivity extends AppCompatActivity {
 
 
         final String notificationMessage = message;
+
         DatabaseReference idReference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
         idReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot)
             {
                 User user = dataSnapshot.getValue(User.class);
-                sendNotification(receiverID, user.getUsername(), notificationMessage);
-                toNotify = false;
+                if (toNotify) {
+                    Log.i(TAG, "    MessageActivity  -->  sendMessage \n receiver id : " + receiverID
+                                        + "\n user name : "+user.getUsername() + "\n message : " + notificationMessage + "\n  ");
+                    sendNotification(receiverID, user.getUsername(), notificationMessage);
+                    toNotify = false;
+                }
             }
 
             @Override
@@ -228,25 +241,28 @@ public class MessageActivity extends AppCompatActivity {
                 {
                     Token token = snapshot.getValue(Token.class);
 
-                    Data data = new Data ( firebaseUser.getUid(), username+": "+notificationMessage,
-                                "TextChatApp New Message", userID, R.mipmap.ic_launcher );
+                    Data data = new Data ( userID, username+": "+notificationMessage,
+                                "TextChatApp New Message", firebaseUser.getUid(), R.mipmap.ic_launcher );
 
                     Sender sender = new Sender(data, token.getToken());
 
                     apiService.sendNotification(sender)
-                        .enqueue(new Callback<Response>()
+                        .enqueue(new Callback<RetrofitResponse>()
                         {
                             @Override
-                            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-                                if (response.code() == 200){
-                                    if (response.body().success != 1){
-                                        Toast.makeText(MessageActivity.this, "Failed!", Toast.LENGTH_SHORT).show();
+                            public void onResponse(Call<RetrofitResponse> call, Response<RetrofitResponse> retrofitResponse) {
+                                if (retrofitResponse.code() == 200){
+                                    if (retrofitResponse.body().success != 1){
+                                        Toast.makeText(MessageActivity.this, "MessageActivity_onResponse_Failed!", Toast.LENGTH_LONG).show();
                                     }
                                 }
+                                Log.i(TAG, "    MessageActivity  -->  (sendNotification) " +
+                                                    "\n response.code _ "+retrofitResponse.code()
+                                                    + " \n response.success _ "+retrofitResponse.body().success);
                             }
 
                             @Override
-                            public void onFailure(Call<Response> call, Throwable t) {
+                            public void onFailure(Call<RetrofitResponse> call, Throwable t) {
 
                             }
 
